@@ -2,7 +2,8 @@ var MapApp = React.createClass({displayName: "MapApp",
 
   getInitialState : function() {
     return {
-      routePoints: []
+      routePoints: [],
+      meta : {}
     }
   },
 
@@ -25,17 +26,36 @@ var MapApp = React.createClass({displayName: "MapApp",
     query.find({
       success: function(data) {
         self.setState({ routePoints: data });
+        self.setMetaData();
       }
     });
+  },
+
+  setMetaData : function() {
+    var startTime = new Date(this.state.routePoints[0].createdAt);
+    var endTime = new Date(this.state.routePoints[this.state.routePoints.length - 1].createdAt);
+    var distance = computeTotalDistance(this.state.routePoints);
+    var diff = diffInSeconds(endTime, startTime);
+
+    this.setState({ meta : {
+      startTime : startTime,
+      endTime : endTime,
+      distance : computeTotalDistance(this.state.routePoints),
+      diff : diffInSeconds(endTime, startTime),
+      speed : speedPerHour(distance, diff)
+    }});
   },
 
   render : function() {
     var createItem = function(item, idx) {
       return React.createElement("li", {className: "list-group-item"},  idx, " - ",  item.attributes.location._latitude, " - ",  item.attributes.location._longitude);
     };
+    console.log(this.state.meta);
+
     return React.createElement("div", null, 
-      React.createElement(Map, {routes: this.state.routePoints}), 
-      React.createElement("ul", {className: "list-group"},  this.state.routePoints.map(createItem) )
+      React.createElement("h1", null, "IUGO Sample Trip"), 
+      React.createElement(Meta, {meta: this.state.meta}), 
+      React.createElement(Map, {routes: this.state.routePoints})
     );
   }
 });
