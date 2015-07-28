@@ -50,7 +50,6 @@ var MapApp = React.createClass({displayName: "MapApp",
     var createItem = function(item, idx) {
       return React.createElement("li", {className: "list-group-item"},  idx, " - ",  item.attributes.location._latitude, " - ",  item.attributes.location._longitude);
     };
-    console.log(this.state.meta);
 
     return React.createElement("div", null, 
       React.createElement("h1", null, "IUGO Sample Trip"), 

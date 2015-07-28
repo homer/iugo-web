@@ -32,7 +32,8 @@ function computeTotalDistance(aRoutes){
 function diffInSeconds(end, start) {
   var tEnd = moment(end);
   var tStart = moment(start);
-  return tEnd.diff(tStart, 'seconds');
+  var diff = tEnd.diff(tStart, 'seconds');
+  return diff;
 }
 
 function speedPerHour(distance, seconds) {
@@ -40,7 +41,7 @@ function speedPerHour(distance, seconds) {
 }
 
 function pad(num, size) {
-  var s = num+"";
+  var s = num + "";
   while (s.length < size) s = "0" + s;
   return s;
 }
