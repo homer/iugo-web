@@ -7,7 +7,7 @@ var MapApp = React.createClass({
     }
   },
 
-  componentDidMount : function() {
+  componentWillMount : function() {
     this.getGeoPoints();
   },
 
@@ -26,24 +26,30 @@ var MapApp = React.createClass({
     query.find({
       success: function(data) {
         self.setState({ routePoints: data });
-        self.setMetaData();
+        self.getMetaData();
       }
     });
   },
 
-  setMetaData : function() {
-    var startTime = new Date(this.state.routePoints[0].createdAt);
-    var endTime = new Date(this.state.routePoints[this.state.routePoints.length - 1].createdAt);
-    var distance = computeTotalDistance(this.state.routePoints);
-    var diff = diffInSeconds(endTime, startTime);
+  getMetaData : function() {
+    if(this.state.routePoints.length > 0) {
+      var startTime = new Date(this.state.routePoints[0].createdAt);
+      var endTime = new Date(this.state.routePoints[this.state.routePoints.length - 1].createdAt);
+      var distance = computeTotalDistance(this.state.routePoints);
+      var diff = diffInSeconds(endTime, startTime);
 
-    this.setState({ meta : {
-      startTime : startTime,
-      endTime : endTime,
-      distance : computeTotalDistance(this.state.routePoints),
-      diff : diffInSeconds(endTime, startTime),
-      speed : speedPerHour(distance, diff)
-    }});
+      var meta = {
+        startTime : startTime,
+        endTime : endTime,
+        distance : computeTotalDistance(this.state.routePoints),
+        diff : diffInSeconds(endTime, startTime),
+        speed : speedPerHour(distance, diff)
+      };
+
+      return meta;
+    } else {
+      return null;
+    }
   },
 
   render : function() {
@@ -53,8 +59,8 @@ var MapApp = React.createClass({
 
     return <div>
       <h1>IUGO Sample Trip</h1>
-      <Meta meta={this.state.meta} />
-      <Map routes={this.state.routePoints} />
+      <Meta meta={ this.getMetaData() } />
+      <Map routes={ this.state.routePoints } />
     </div>;
   }
 });

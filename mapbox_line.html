@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <!-- Mapbox -->
+    <script src='https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.css' rel='stylesheet' />
+    <style>
+    #map {
+        height:400px;
+        background-color: red;
+    }
+    </style>
+  </head>
+  <body>
+    <div id="map" class="container"></div>
+
+<script>
+L.mapbox.accessToken = 'pk.eyJ1Ijoib3NlbnNveSIsImEiOiIyNDg2NmI1YTgxYWM0M2UwNTI0NTEyYTdmM2ExNmJjZiJ9.pYrzm0PRW7hj1uDmy9UeKA';
+var mapboxTiles = L.tileLayer(
+  'https://{s}.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=' + L.mapbox.accessToken, {
+  attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'
+});
+
+var geoJsonData = [
+  [ -83.75452995300293, 42.265686119596545 ],
+  [-83.7443161010742, 42.26911597829318 ],
+  [-83.74105453491211, 42.26498742179828 ],
+  [-83.73762130737305, 42.260350412927444 ],
+  [-83.74208450317383, 42.25406132180117 ],
+  [-83.75264167785645, 42.25584011825486 ],
+  [-83.76259803771973, 42.26111268438319 ],
+  [-83.7637996673584, 42.26638480965128 ],
+  [-83.7586498260498, 42.2708943500754 ],
+  [-83.75452995300293, 42.274260416436476 ],
+  [-83.75075340270996, 42.27349830394712 ],
+  [-83.74611854553223,42.27521304408864]
+];
+console.log(geoJsonData);
+
+geoJsonData.forEach(function(coordGroup){
+    coordGroup.reverse();
+});
+
+var map = L.map('map')
+              .addLayer(mapboxTiles)
+              .setView(geoJsonData[0], 13);
+
+
+var polyline_options = { color: '#ff0000' };
+
+var polyline = L.polyline(geoJsonData, polyline_options).addTo(map);
+
+</script>
+  </body>
+</html>

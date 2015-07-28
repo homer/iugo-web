@@ -35,6 +35,8 @@ var Meta = React.createClass({
   render : function() {
     if(this.props.meta) {
       return this.renderMeta();
+    } else {
+      return null;
     }
   }
 
